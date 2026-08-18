@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Image App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <h1>AI Image App</h1>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('text-to-image')">Text → Image</button>
+        <button class="tab-btn" onclick="showTab('image-to-text')">Image → Description</button>
+    </div>
+
+    <div id="text-to-image" class="tab-content active">
+        <h2>Text se Image Banao</h2>
+        <textarea id="promptInput" placeholder="Yahan apna prompt likho, jaise: a cat sitting on the moon"></textarea>
+        <button onclick="generateImage()">Generate Image</button>
+        <p id="imageStatus"></p>
+        <img id="resultImage" style="display:none; max-width: 400px; margin-top: 15px;">
+    </div>
+
+    <div id="image-to-text" class="tab-content">
+        <h2>Image se Description Nikalo</h2>
+        <input type="file" id="imageInput" accept="image/*">
+        <button onclick="describeImage()">Get Description</button>
+        <p id="descStatus"></p>
+        <p id="resultDescription" style="font-weight: bold;"></p>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
