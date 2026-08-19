@@ -92,7 +92,7 @@ def describe_image():
         )
 
         result = client.chat.completions.create(
-            model="Qwen/Qwen2.5-VL-3B-Instruct",
+            model="google/gemma-3-4b-it",
             messages=[
                 {
                     "role": "user",
