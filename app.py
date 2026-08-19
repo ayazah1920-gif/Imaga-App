@@ -1,7 +1,6 @@
 import os
 import base64
 import io
-import traceback
 
 from flask import Flask, render_template, request, jsonify
 from dotenv import load_dotenv
@@ -45,7 +44,6 @@ def generate_image():
             model="black-forest-labs/FLUX.1-schnell"
         )
 
-        # PIL image ko PNG bytes mein convert karo
         image_bytes = io.BytesIO()
         image.save(image_bytes, format="PNG")
 
@@ -94,20 +92,20 @@ def describe_image():
         )
 
         result = client.chat.completions.create(
-            model="zai-org/GLM-4.5V",
+            model="Qwen/Qwen2.5-VL-3B-Instruct",
             messages=[
                 {
                     "role": "user",
                     "content": [
                         {
+                            "type": "text",
+                            "text": "Describe this image clearly and give a detailed description that could be used as an image-generation prompt."
+                        },
+                        {
                             "type": "image_url",
                             "image_url": {
                                 "url": image_url
                             }
-                        },
-                        {
-                            "type": "text",
-                            "text": "Describe this image clearly and in detail. Include the objects, people, environment, colors, actions, and overall scene. Give a detailed description that can also be used as an image-generation prompt."
                         }
                     ]
                 }
@@ -121,17 +119,9 @@ def describe_image():
         })
 
     except Exception as e:
-
-        print("IMAGE TO TEXT ERROR:", repr(e), flush=True)
+        print("IMAGE TO TEXT ERROR:", repr(e))
 
         return jsonify({
             "error": "Description generate nahi ho saki",
-            "details": repr(e),
-            "error_type": type(e).__name__
+            "details": repr(e)
         }), 500
-if __name__ == "__main__":
-    app.run(
-        host="0.0.0.0",
-        port=int(os.environ.get("PORT", 5000)),
-        debug=False
-    )
